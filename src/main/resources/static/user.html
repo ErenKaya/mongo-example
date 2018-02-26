@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta charset="utf-8"/>
+    <title>Infonal Quest</title>
+
+    <meta name="description" content="Static &amp; Dynamic Tables"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+
+    <!-- bootstrap & fontawesome -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="assets/font-awesome/4.5.0/css/font-awesome.min.css"/>
+
+    <!-- page specific plugin styles -->
+    <link rel="stylesheet" href="assets/css/jquery-ui.min.css"/>
+
+    <!-- text fonts -->
+    <link rel="stylesheet" href="assets/css/fonts.googleapis.com.css"/>
+
+    <!-- ace styles -->
+    <link rel="stylesheet" href="assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style"/>
+
+    <!--[if lte IE 9]>
+    <link rel="stylesheet" href="assets/css/ace-part2.min.css" class="ace-main-stylesheet"/>
+    <![endif]-->
+    <link rel="stylesheet" href="assets/css/ace-skins.min.css"/>
+    <link rel="stylesheet" href="assets/css/ace-rtl.min.css"/>
+
+    <!--[if lte IE 9]>
+    <link rel="stylesheet" href="assets/css/ace-ie.min.css"/>
+    <![endif]-->
+
+
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+    <script src="assets/js/jquery-2.1.4.min.js"></script>
+
+    <!--<![endif]-->
+
+    <!--[if IE]>
+    <script src="assets/js/jquery-1.11.3.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript">
+        if ('ontouchstart' in document.documentElement) document.write("<script src='assets/js/jquery.mobile.custom.min.js'>" + "<" + "/script>");
+    </script>
+    <script src="assets/js/bootstrap.min.js"></script>
+
+
+    <script src="assets/js/jquery-ui.min.js"></script>
+    <script src="assets/js/jquery.ui.touch-punch.min.js"></script>
+    <script src="assets/js/ace-extra.min.js"></script>
+    <script src="assets/js/ace-elements.min.js"></script>
+    <script src="assets/js/ace.min.js"></script>
+
+    <![endif]-->
+</head>
+<body>
+<div class="row">
+    <div class="col-xs-12">
+        <!-- PAGE CONTENT BEGINS -->
+        <div class="row">
+            <pre id ="result">
+            </pre>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <table id="simple-table" class="table  table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Surname</th>
+
+                        <th>
+                            <i class="ace-icon fa fa-phone bigger-110 hidden-480"></i>
+                            Phone
+                        </th>
+
+                        <th>
+                            <i class="ace-icon fa fa-cog bigger-110 hidden-480"></i>
+                            Operations
+                        </th>
+                    </tr>
+                    </thead>
+
+                    <tbody id="list-container">
+
+
+                    </tbody>
+                </table>
+            </div><!-- /.span -->
+        </div><!-- /.row -->
+
+        <div class="hr hr-18 dotted hr-double"></div>
+
+        <h4 class="pink">
+            <i class="ace-icon fa fa-hand-o-right icon-animated-hand-pointer blue"></i>
+            <a href="#save-modal" role="button" class="green" data-toggle="modal" data-user-id="123"> ADD USER </a>
+        </h4>
+
+        <!-- PAGE CONTENT ENDS -->
+    </div><!-- /.col -->
+</div>
+<div id="delete-modal" class="hide">
+    <div class="alert alert-info bigger-110">
+        These items will be permanently deleted and cannot be recovered.
+    </div>
+
+    <div class="space-6"></div>
+
+    <p class="bigger-110 bolder center grey">
+        <i class="ace-icon fa fa-hand-o-right blue bigger-120"></i>
+        Are you sure?
+    </p>
+</div>
+
+<div id="save-modal" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header no-padding">
+                <div class="table-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                    USER RECORD PANEL
+                </div>
+            </div>
+
+            <div class="modal-body no-padding">
+                <form id="user-save-form" method="post" action="/user/add">
+                    <input type="hidden" class="form control "/>
+
+                    <div class="form-field-mask-2">
+                        <label for="form-field-mask-2">
+                            Name
+                            <small class="text-warning">Required</small>
+                        </label>
+
+                        <div class="input-group">
+
+                            <input type="text" class="form control " value="" id="name" name="name"/>
+
+                        </div>
+                    </div>
+                    <div class="form-field-mask-2">
+                        <label for="form-field-mask-2">
+                            Surname
+                            <small class="text-warning">Required</small>
+                        </label>
+
+                        <div class="input-group">
+
+                            <input type="text" class="form control " value="" id="surname" name="surname"/>
+
+                        </div>
+                    </div>
+                    <div class="form-field-mask-2">
+                        <label for="form-field-mask-2">
+                            Phone
+                            <small class="text-warning">Required</small>
+                        </label>
+
+                        <div class="input-group">
+
+                            <input class="form-control" type="text" value="" id="phoneNumber" name="phoneNumber"/>
+                        </div>
+                    </div>
+                    <div class="g-recaptcha" data-sitekey="6Le2VUgUAAAAAMAg4da5LoQ0g0LXOW7i_QJN5s6V"></div>
+            </div>
+
+            <div class="modal-footer no-margin-top">
+                <button type="submit" id="user-save-button" class="btn btn-primary btn-sm pull-left"
+                        data-dismiss="modal">
+                    <i class="ace-icon fa fa-arrow-right bigg"></i>
+                    Save
+                </button>
+            </div>
+            <div id="user-save-response"></div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+<div id="update-modal" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header no-padding">
+                <div class="table-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="white">&times;</span>
+                    </button>
+                    USER UPDATE PANEL
+                </div>
+            </div>
+
+            <div class="modal-body no-padding">
+                <form id="user-update-form" action="user/update">
+                    <input type="hidden" class="form control " value="" id="update-id" name="id"/>
+
+                    <div class="form-field-mask-2">
+                        <label for="form-field-mask-2">
+                            Name
+                            <small class="text-warning">Required</small>
+                        </label>
+
+                        <div class="input-group">
+
+                            <input type="text" class="form control " value="" id="update-name" name="name"/>
+
+                        </div>
+                    </div>
+                    <div class="form-field-mask-2">
+                        <label for="form-field-mask-2">
+                            Surname
+                            <small class="text-warning">Required</small>
+                        </label>
+
+                        <div class="input-group">
+
+                            <input type="text" class="form control " value="" id="update-surname" name="surname"/>
+
+                        </div>
+                    </div>
+                    <div class="form-field-mask-2">
+                        <label for="form-field-mask-2">
+                            Phone
+                            <small class="text-warning">Required</small>
+                        </label>
+
+                        <div class="input-group">
+                            <input class="form-control" type="text" value="" id="update-phoneNumber"
+                                   name="phoneNumber"/>
+                        </div>
+                    </div>
+                    <div id="user-update-response"></div>
+
+            </div>
+
+            <div class="modal-footer no-margin-top">
+                <button id="user-update-button" class="btn btn-primary btn-sm pull-left" data-dismiss="modal">
+                    <i class="ace-icon fa fa-arrow-right bigg"></i>
+                    Save
+                </button>
+            </div>
+
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+</body>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        getUserList();
+
+    });
+
+    $('#update-modal').on('show.bs.modal', function (e) {
+        var id = $(e.relatedTarget).data('user-id');
+        var name = $(e.relatedTarget).data('user-name');
+        var surname = $(e.relatedTarget).data('user-surname');
+        var phoneNumber = $(e.relatedTarget).data('user-phone-number');
+        $(e.currentTarget).find('input[id="update-id"]').val(id);
+        $(e.currentTarget).find('input[id="update-name"]').val(name);
+        $(e.currentTarget).find('input[id="update-surname"]').val(surname);
+        $(e.currentTarget).find('input[id="update-phoneNumber"]').val(phoneNumber);
+    });
+
+    $('#save-modal').on('show.bs.modal', function (e) {
+        var userId = $(e.relatedTarget).data('user-id');
+        $(e.currentTarget).find('input[name="userId"]').val(userId);
+    });
+
+    function deleteClick(e) {
+        var userId = e;
+        $.ajax({
+            type: 'post',
+            url: '/user/delete/' + userId,
+            success: function (e) {
+                var html ="<div class=\"alert alert-block alert-success\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><i class=\"ace-icon fa fa-times\"></i></button><p><strong><i class=\"ace-icon fa fa-check\"></i>Well done!</strong>"+"SUCCESS"+"</p></div>";
+                cleanTableBody();
+                getUserList();
+                $("#result").html(html);
+            },
+            error: function () {
+                console.log("başarısız");
+
+            }
+        });
+    };
+
+    $(document).on('click', "#delete-button-container", function (e) {
+        e.preventDefault();
+        var userId = $(e.currentTarget).data("user-id");
+        $("#delete-modal").removeClass('hide').dialog({
+            resizable: false,
+            width: '320',
+            modal: true,
+            title: "Delete Operation",
+            title_html: true,
+            buttons: [
+                {
+                    html: "<i class='ace-icon fa fa-trash-o bigger-110'></i>&nbsp; Delete all items",
+                    "class": "btn btn-danger btn-minier",
+                    click: function () {
+                        $(this).dialog(deleteClick(userId));
+                        $(this).dialog("close");
+                    }
+                }
+                ,
+                {
+                    html: "<i class='ace-icon fa fa-times bigger-110'></i>&nbsp; Cancel",
+                    "class": "btn btn-minier",
+                    click: function () {
+                        $(this).dialog("close");
+                    }
+                }
+            ]
+        });
+    });
+
+    $(document).on('click', "#user-save-button", function (e) {
+        formPost("user-save-form", "user-save-response", "user-save-button")
+
+    });
+
+    $(document).on('click', "#user-update-button", function (e) {
+        formPost("user-update-form", "user-update-response", "user-update-button")
+
+    });
+
+    function getUserList() {
+        $.ajax({
+            type: 'get',
+            url: '/user/list',
+            success: function (data) {
+                $.each(data, function (key, value) {
+                    $("#list-container").append("<tr id='row-container" + value.id + "'>");
+                    var rowBody = "<td>" + value.name + "</td>"
+                        + "<td>" + value.surname + "</td>"
+                        + "<td>" + value.phoneNumber + "</td>"
+                        + "<td id='operations-td'>"
+                        + "<div id='operation-container' class='btn-group'>"
+                        + "<a id='update-button-container'   href='#update-modal' data-user-id='" + value.id + "' data-user-name='" + value.name + "' data-user-surname='" + value.surname + "' data-user-phone-number='" + value.phoneNumber + "' data-toggle='modal'>"
+                        + "<button  id='pencil-operation-btn'  class='btn btn-xs btn-info'>"
+                        + "<i class='ace-icon fa fa-pencil bigger-120'></i></button></a>"
+                        + "<a id='delete-button-container'   data-user-id='" + value.id + "' data-toggle='modal'>"
+                        + "<button   id='delete-operation-btn'  class='btn btn-xs btn-danger'>"
+                        + "<i class='ace-icon fa fa-trash-o bigger-120'></i></button></a></div></td>";
+                    $("#row-container" + value.id).append(rowBody);
+                });
+            },
+            error: function () {
+
+            }
+        });
+    }
+
+    function formPost(formId, responseId, buttonId) {
+        var responseTag = $("#" + responseId);
+        var formTag = $("#" + formId);
+        /*var submitButton = $("#"+buttonId);*/
+
+        console.log(formId + " submitted");
+        console.log(responseId);
+        console.log(buttonId);
+        console.log()
+        /*$(submitButton).attr('disabled', 'disabled');*/
+        disableInput(buttonId);
+        var form = document.getElementById(formId);
+        var data = toJson(new FormData(form));
+        $.ajax({
+            contentType: "application/json; charset=utf-8",
+            'type': 'post',
+            'dataType': 'json',
+            'data': data,
+            'url': formTag.attr("action"),
+            success: function (e) {
+                enableInput(buttonId);
+                var html ="<div class=\"alert alert-block alert-success\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><i class=\"ace-icon fa fa-times\"></i></button><p><strong><i class=\"ace-icon fa fa-check\"></i>Well done!</strong>"+"SUCCESS"+"</p></div>";
+                cleanTableBody();
+                getUserList();
+                $("#result").html(html);
+
+            },
+            error: function (e) {
+                enableInput(buttonId);
+                var html = "<div class=\"alert alert-danger\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"> <i class=\"ace-icon fa fa-times\"></i></button><strong> <i class=\"ace-icon fa fa-times\"></i>Oh snap!</strong>"
+                    +e.responseText +
+                    "<br /></div>";
+                $("#result").html(html);
+            }
+        });
+    }
+
+    function cleanTableBody() {
+        $("#list-container").empty();
+    }
+
+    function disableInput(id) {
+        /*$("#"+id).attr('disabled', 'disabled');*/
+        $("#" + id).prop("disabled", true);
+    }
+
+    function toJson(formData) {
+        var object = {};
+        formData.forEach(function (value, key) {
+            object[key] = value;
+        });
+        if ("g-recaptcha-response" in object) {
+            Object.defineProperty(object, "captcha", Object.getOwnPropertyDescriptor(object, "g-recaptcha-response"));
+            delete object["g-recaptcha-response"];
+        }
+        return JSON.stringify(object);
+    }
+
+    function enableInput(id) {
+        /*$("#"+id).attr('disabled', 'disabled');*/
+        $("#" + id).prop("disabled", false);
+        $("#" + id).removeProp("disabled");
+    }
+
+
+</script>
+
+</html>
